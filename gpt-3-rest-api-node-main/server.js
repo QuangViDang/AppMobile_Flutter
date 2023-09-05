@@ -2,7 +2,7 @@
 
 // require('dotenv').config()
 // const config = new Configuration({
-//     apiKey: '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',
+//     apiKey: '',
 // })
 
 // const openai = new OpenAIApi(config)
