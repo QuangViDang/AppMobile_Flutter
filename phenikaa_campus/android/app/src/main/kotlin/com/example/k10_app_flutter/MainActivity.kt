@@ -1,4 +1,4 @@
-package com.example.phenikaa_campus
+package com.example.k10_app_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 

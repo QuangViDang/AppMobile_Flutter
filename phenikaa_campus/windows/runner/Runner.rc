@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "phenikaa_campus" "\0"
+            VALUE "FileDescription", "k10_app_flutter" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "phenikaa_campus" "\0"
+            VALUE "InternalName", "k10_app_flutter" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "phenikaa_campus.exe" "\0"
-            VALUE "ProductName", "phenikaa_campus" "\0"
+            VALUE "OriginalFilename", "k10_app_flutter.exe" "\0"
+            VALUE "ProductName", "k10_app_flutter" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
