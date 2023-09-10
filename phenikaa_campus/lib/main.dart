@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -26,38 +27,35 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-Future fetchComplexity(String prompt) async {
-  final String apiUrl =
-      'https://b152-2a09-bac1-7aa0-50-00-246-3e.ngrok-free.app/find'; // Thay thế bằng đường dẫn API thực tế của bạn
-
-  try {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'prompt': prompt,
-      }),
-    );
-
-    if (response.statusCode == 201) {
-      final data = jsonDecode(response.body);
-    } else {
-      // Xử lý lỗi ở đây nếu cần
-      print('Request failed with status: ${response.statusCode}');
-    }
-  } catch (error) {
-    // Xử lý lỗi nếu gặp lỗi kết nối hoặc lỗi khác
-    print('Error: $error');
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
-  Map res = {};
+  Map<String, dynamic> responseBody = {};
+
+  Future fetchComplexity(String prompt) async {
+    final String apiUrl =
+        'https://ee06-2a09-bac5-d45c-16d2-00-246-3b.ngrok-free.app/find-complexity';
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'prompt': prompt,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        responseBody = json.decode(response!.body);
+      } else {
+        return response;
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   void initState() {
@@ -73,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Each time to start a speech recognition session
   void _startListening() async {
-    print("Nói đi nào");
     await _speechToText.listen(onResult: _onSpeechResult);
     setState(() {});
   }
@@ -83,16 +80,18 @@ class _MyHomePageState extends State<MyHomePage> {
   /// and the SpeechToText plugin supports setting timeouts on the
   /// listen method.
   Future _stopListening() async {
-    print("vaaaa===");
+    setState(() {
+      responseBody = {};
+    });
     await _speechToText.stop();
-    res = await fetchComplexity(_lastWords);
+    await fetchComplexity(_lastWords);
+    print("Thông tin tại đây ===>\n '${responseBody['data']}'");
     setState(() {});
   }
 
   /// This is the callback that the SpeechToText plugin calls when
   /// the platform returns recognized words.
   void _onSpeechResult(SpeechRecognitionResult result) {
-    print(result);
     setState(() {
       _lastWords = result.recognizedWords;
     });
